@@ -1,10 +1,12 @@
+import os
 from statistics import mean
 import matplotlib.pyplot as plt
 from localisation import translate as _
 
 
 def plot_sync_accuracy(
-        timestamps_video: list[int], timestamps_audio: list[int]
+        timestamps_video: list[int], timestamps_audio: list[int],
+        output_folder = None,
 ) -> None:
     timestamps_audio = timestamps_audio[0:len(timestamps_video)]
     timestamps_video = timestamps_video[0:len(timestamps_audio)]
@@ -17,4 +19,5 @@ def plot_sync_accuracy(
     plt.plot(x, diffs, "+", label=_("Measured Data"))
     plt.hlines(mean(diffs), x[0], x[-1], color="orange", label=_("Average"))
     plt.legend()
-    plt.show()
+    if output_folder == None: plt.show()
+    else: plt.savefig(output_folder + os.sep + 'accuracy.png')
