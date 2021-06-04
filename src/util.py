@@ -118,10 +118,16 @@ def volume_timestamps_for_wav(
     return timestamps[1:]
     
 
-base_path = '..' + os.sep + 'data' + os.sep + 'example' + os.sep
-
-vidcap = cv2.VideoCapture(base_path + 'local.mkv')
-print(white_timestamps_for_vidcap(vidcap))
-
-video_to_wav(base_path + 'local.mkv')
-print(volume_timestamps_for_wav(TEMP_DIR + 'local.wav'))
+def timestamps_video_and_video_for_file(videofile: str) -> tuple[int, int]:
+    """
+    Return computed timestamps of white noise in audio and mostly white images
+    in video for `videofile`.
+    """
+    timestamps_video = white_timestamps_for_vidcap(
+        cv2.VideoCapture(videofile)
+    )
+    video_to_wav(videofile)
+    timestamps_audio = volume_timestamps_for_wav(
+        TEMP_DIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav'
+    )
+    return timestamps_video, timestamps_audio
