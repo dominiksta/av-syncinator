@@ -11,11 +11,6 @@ if FFMPEG == None: raise Exception("ffmpeg not found in PATH")
 
 TEMP_DIR = '..' + os.sep + 'data' + os.sep + 'temp' + os.sep
 
-TOLERANCE_COLOR_DETECTION = 30
-TOLERANCE_COLOR_PERCENT = 0.7
-VOLUME_MIN_LEVEL_DB = -100
-SOUND_INTERVAL_MS = 10
-
 def color_percent_in_img(img: np.array, rgb, diff) -> int:
     """
     Return the percentage of the color given by `rgb` in `img` where `img` is
@@ -41,11 +36,10 @@ def color_percent_in_img(img: np.array, rgb, diff) -> int:
     # cv2.waitKey(0)
 
 
-def white_percent_in_img(img: np.array) -> int:
-    return color_percent_in_img(img, [255, 255, 255], TOLERANCE_COLOR_DETECTION)
-
-
-def white_timestamps_for_vidcap(vidcap) -> list[int]:
+def white_timestamps_for_vidcap(
+        vidcap: cv2.VideoCapture, tolerance_color: int = 30,
+        tolerance_color_ratio: int = 0.7,
+) -> list[int]:
     """
     Return a list of integer timestamps in ms corresponding to the start times
     of mostly white frames in `vidcap` relative to the start of the video. May
@@ -64,15 +58,16 @@ def white_timestamps_for_vidcap(vidcap) -> list[int]:
     last_progress_time = curr_time()
 
     while success:
-        white = white_percent_in_img(img)
+        white = color_percent_in_img(img, [255, 255, 255], tolerance_color)
         time = vidcap.get(cv2.CAP_PROP_POS_MSEC)
-        if white > TOLERANCE_COLOR_PERCENT:
+        if white > tolerance_color_ratio:
             if not last_white:
                 timestamps.append(time)
             last_white = True
         else: last_white = False
         if (curr_time() - last_progress_time) > 1:
             print("Progress: " + str(int((time / vid_end) * 100)) + "%")
+            # print(timestamps)
             last_progress_time = curr_time()
         success, img = vidcap.read()
 
@@ -105,21 +100,20 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
                TEMP_DIR + fname[0] + '.wav')
 
 
-def volume_timestamps_for_wav(wavfile: str) -> list[int]:
+def volume_timestamps_for_wav(
+        wavfile: str, interval_ms: int = 10, min_volume_db: int = -100
+) -> list[int]:
     track = AudioSegment.from_wav(wavfile)
     last_loud = False
     timestamps = []
 
-    for pos_ms in range(0, len(track), SOUND_INTERVAL_MS):
-        vol = track[pos_ms:pos_ms + SOUND_INTERVAL_MS].dBFS
-        # if vol != float('-inf'):
-        #     print(vol)
-        if vol > VOLUME_MIN_LEVEL_DB:
+    for pos_ms in range(0, len(track), interval_ms):
+        vol = track[pos_ms:pos_ms + interval_ms].dBFS
+        if vol > min_volume_db:
             if not last_loud:
                 timestamps.append(pos_ms)
             last_loud = True
         else: last_loud = False
-        # print(timestamps)
 
     return timestamps[1:]
     
@@ -127,7 +121,7 @@ def volume_timestamps_for_wav(wavfile: str) -> list[int]:
 base_path = '..' + os.sep + 'data' + os.sep + 'example' + os.sep
 
 vidcap = cv2.VideoCapture(base_path + 'local.mkv')
-white_timestamps_for_vidcap(vidcap)
+print(white_timestamps_for_vidcap(vidcap))
 
 video_to_wav(base_path + 'local.mkv')
 print(volume_timestamps_for_wav(TEMP_DIR + 'local.wav'))
