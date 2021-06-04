@@ -37,8 +37,8 @@ def color_percent_in_img(img: np.array, rgb, diff) -> int:
 
 
 def white_timestamps_for_vidcap(
-        vidcap: cv2.VideoCapture, tolerance_color: int = 30,
-        tolerance_color_ratio: int = 0.7,
+        vidcap: cv2.VideoCapture, tolerance_color: int,
+        tolerance_color_ratio: int,
 ) -> list[int]:
     """
     Return a list of integer timestamps in ms corresponding to the start times
@@ -101,7 +101,7 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
 
 
 def volume_timestamps_for_wav(
-        wavfile: str, interval_ms: int = 10, min_volume_db: int = -100
+        wavfile: str, interval_ms: int, min_volume_db: int
 ) -> list[int]:
     track = AudioSegment.from_wav(wavfile)
     last_loud = False
@@ -118,16 +118,26 @@ def volume_timestamps_for_wav(
     return timestamps[1:]
     
 
-def timestamps_video_and_video_for_file(videofile: str) -> tuple[int, int]:
+def timestamps_video_and_video_for_file(
+        videofile: str,
+        video_threshold_color_diff: int = 30,
+        video_threshold_color_ratio: int = 0.7,
+        audio_interval_ms: int = 10,
+        audio_threshold_volume_db: int = -100,
+) -> tuple[int, int]:
     """
     Return computed timestamps of white noise in audio and mostly white images
     in video for `videofile`.
     """
     timestamps_video = white_timestamps_for_vidcap(
-        cv2.VideoCapture(videofile)
+        cv2.VideoCapture(videofile),
+        video_threshold_color_diff,
+        video_threshold_color_ratio
     )
     video_to_wav(videofile)
     timestamps_audio = volume_timestamps_for_wav(
-        TEMP_DIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav'
+        TEMP_DIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
+        audio_interval_ms,
+        audio_threshold_volume_db
     )
     return timestamps_video, timestamps_audio
