@@ -2,6 +2,7 @@ import sys
 import os
 import shutil
 
+FFMPEG = None
 APPDIR = '..' + os.sep
 TEMPDIR = (os.getenv("TMP") if os.name == 'nt' else '/tmp') + os.sep \
     + "_AVSyncinator" + os.sep
@@ -24,3 +25,9 @@ def _pyinstchdir():
     if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
         global APPDIR
         APPDIR = sys._MEIPASS + os.sep
+        os.environ['PATH'] = os.environ['PATH'] + ';' + APPDIR
+
+    global FFMPEG
+    FFMPEG = APPDIR + 'ffmpeg.exe' if os.path.exists(APPDIR + 'ffmpeg.exe') \
+        else shutil.which('ffmpeg')
+    if FFMPEG == None: raise Exception("ffmpeg not found in PATH")

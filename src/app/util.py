@@ -5,11 +5,7 @@ from time import time as curr_time
 import subprocess
 import numpy as np
 from pydub import AudioSegment
-from common import TEMPDIR
-
-from shutil import which
-FFMPEG = which("ffmpeg")
-if FFMPEG == None: raise Exception("ffmpeg not found in PATH")
+from common import TEMPDIR, FFMPEG
 
 Log = logger.Logger.get_instance()
 

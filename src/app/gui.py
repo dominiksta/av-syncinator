@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 import threading, queue
 import logger
-import common
+import common; common.dirsetup()
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo, showerror
 from localisation import translate as _
@@ -11,7 +11,6 @@ from testdata import testdata
 import plotting
 import sys
 
-common.dirsetup()
 Log = logger.Logger.get_instance()
 
 class LogOutput(tk.Frame):

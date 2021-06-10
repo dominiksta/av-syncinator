@@ -1,13 +1,12 @@
 import os, sys
 import logger
-import common
+import common; common.dirsetup()
 from util import timestamps_video_and_video_for_file
 from localisation import set_locale
 from argparse import ArgumentParser
 from plotting import plot_sync_accuracy
 from testdata import testdata
 
-common.dirsetup()
 def on_closing(): common.dirteardown()
 
 Log = logger.Logger.get_instance().log
