@@ -1,6 +1,4 @@
 import os
-import sys
-import importlib
 import logger
 from util import timestamps_video_and_video_for_file
 from localisation import set_locale
@@ -26,26 +24,23 @@ parser.add_argument('--video-color-diff', type=int, default=30,
 parser.add_argument('--video-color-ratio', type=int, default=0.7,
                     help='How much of the screen has to be white [0-1]')
 
-if len(sys.argv) <= 1:
-    importlib.import_module('gui')
+args = parser.parse_args()
+
+if args.lang != None: set_locale(args.lang)
+
+if args.output_directory != None:
+    if not os.path.exists(args.output_directory):
+        raise Exception("Invalid Directory: " + args.output_directory)
+
+if args.filename == '__test__':
+    tv, ta = testdata['timestamps_video'], testdata['timestamps_audio']
 else:
-    args = parser.parse_args()
+    tv, ta = timestamps_video_and_video_for_file(
+        videofile=args.filename,
+        video_threshold_color_diff=args.video_color_diff,
+        video_threshold_color_ratio=args.video_color_ratio,
+        audio_interval_ms=args.audio_interval,
+        audio_threshold_volume_db=args.audio_threshold,
+    )
 
-    if args.lang != None: set_locale(args.lang)
-
-    if args.output_directory != None:
-        if not os.path.exists(args.output_directory):
-            raise Exception("Invalid Directory: " + args.output_directory)
-
-    if args.filename == '__test__':
-        tv, ta = testdata['timestamps_video'], testdata['timestamps_audio']
-    else:
-        tv, ta = timestamps_video_and_video_for_file(
-            videofile=args.filename,
-            video_threshold_color_diff=args.video_color_diff,
-            video_threshold_color_ratio=args.video_color_ratio,
-            audio_interval_ms=args.audio_interval,
-            audio_threshold_volume_db=args.audio_threshold,
-        )
-
-    plot_sync_accuracy(tv, ta, args.output_directory)
+plot_sync_accuracy(tv, ta, args.output_directory)
