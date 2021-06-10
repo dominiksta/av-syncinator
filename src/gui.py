@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 import threading, queue
 import logger
+import common
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo, showerror
 from localisation import translate as _
@@ -10,6 +11,7 @@ from testdata import testdata
 import plotting
 import sys
 
+common.dirsetup()
 Log = logger.Logger.get_instance()
 
 class LogOutput(tk.Frame):
@@ -50,8 +52,9 @@ class App:
 
         master.title(_('AV-Syncinator'))
         master.geometry('500x600')
-        master.iconbitmap('res' + os.sep + 'logo' + os.sep + 'logo.ico')
+        master.iconbitmap(common.APPDIR + 'res' + os.sep + 'logo' + os.sep + 'logo.ico')
         master.resizable(False, False)
+        master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         self.lblFilename = tk.Label(master, text=_('File to analyze: '))
         self.lblFilename.place(x=10, y=10)
@@ -166,6 +169,11 @@ class App:
                                    ' trigger a data point [0-1]')
         }
         showinfo(_("Parameter Description"), info[key])
+
+
+    def on_closing(self):
+        common.dirteardown()
+        root.destroy()
 
 
 root = tk.Tk()

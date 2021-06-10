@@ -1,10 +1,14 @@
 import os
 import logger
+import common
 from util import timestamps_video_and_video_for_file
 from localisation import set_locale
 from argparse import ArgumentParser
 from plotting import plot_sync_accuracy
 from testdata import testdata
+
+common.dirsetup()
+def on_closing(): common.dirteardown()
 
 Log = logger.Logger.get_instance().log
 lvl = logger.LogLvl
@@ -24,7 +28,11 @@ parser.add_argument('--video-color-diff', type=int, default=30,
 parser.add_argument('--video-color-ratio', type=int, default=0.7,
                     help='How much of the screen has to be white [0-1]')
 
-args = parser.parse_args()
+try:
+    args = parser.parse_args()
+except:
+    on_closing()
+    exit(1)
 
 if args.lang != None: set_locale(args.lang)
 
@@ -44,3 +52,4 @@ else:
     )
 
 plot_sync_accuracy(tv, ta, args.output_directory)
+on_closing()

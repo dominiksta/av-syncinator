@@ -3,3 +3,8 @@ __pycache__/
 
 /data/temp/*
 !/data/temp/.gitkeep
+
+/build/windows/tmp/*
+!/build/windows/tmp/.gitkeep
+/build/windows/dist/*
+!/build/windows/dist/.gitkeep

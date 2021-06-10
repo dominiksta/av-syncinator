@@ -5,12 +5,11 @@ from time import time as curr_time
 from subprocess import DEVNULL, STDOUT, check_call
 import numpy as np
 from pydub import AudioSegment
+from common import TEMPDIR
 
 from shutil import which
 FFMPEG = which("ffmpeg")
 if FFMPEG == None: raise Exception("ffmpeg not found in PATH")
-
-TEMP_DIR = '..' + os.sep + 'data' + os.sep + 'temp' + os.sep
 
 Log = logger.Logger.get_instance()
 
@@ -104,7 +103,7 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
 
     os.chdir(prevdir)
     os.replace(os.path.dirname(videofile) + os.sep + fname[0] + '.wav',
-               TEMP_DIR + fname[0] + '.wav')
+               TEMPDIR + fname[0] + '.wav')
 
 
 def volume_timestamps_for_wav(
@@ -140,7 +139,7 @@ def timestamps_video_and_video_for_file(
     """
     video_to_wav(videofile)
     timestamps_audio = volume_timestamps_for_wav(
-        TEMP_DIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
+        TEMPDIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
         audio_interval_ms,
         audio_threshold_volume_db
     )
