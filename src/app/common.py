@@ -2,7 +2,7 @@ import sys
 import os
 import shutil
 
-APPDIR = ''
+APPDIR = '..' + os.sep
 TEMPDIR = (os.getenv("TMP") if os.name == 'nt' else '/tmp') + os.sep \
     + "_AVSyncinator" + os.sep
 

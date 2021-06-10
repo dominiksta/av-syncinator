@@ -2,7 +2,7 @@ import cv2
 import os
 import logger
 from time import time as curr_time
-from subprocess import DEVNULL, STDOUT, check_call
+import subprocess
 import numpy as np
 from pydub import AudioSegment
 from common import TEMPDIR
@@ -93,7 +93,16 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
     fname = os.path.splitext(os.path.basename(videofile))
     cmd = ffmpeg + ' -y -i "' + fname[0] + fname[1] + '" "' + fname[0] + '.wav"'
 
-    ret = check_call(cmd, stdout=DEVNULL, stderr=STDOUT)
+    Log.info(cmd)
+    # When using pyinstaller on windows, stdout and stderr seem to not open
+    # correctly. The following command was the only way I could find to have
+    # something that would run silently in all situations (except when using
+    # pyinstaller it pops up a little console window on windows - but in all
+    # other situations its silent).
+    ret = subprocess.check_call(
+        cmd, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE
+    )
 
     if os.name != 'nt': ret = os.WEXITSTATUS(ret)
     if ret != 0:
