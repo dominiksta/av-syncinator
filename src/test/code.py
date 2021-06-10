@@ -19,7 +19,7 @@ Log.output_function = lambda msg: None
 DATADIR = '..' + os.sep + '..' + os.sep + 'data' + os.sep
 
 
-class TestStringMethods(unittest.TestCase):
+class TestCode(unittest.TestCase):
     def setUp(self): common.dirsetup()
     def tearDown(self): common.dirteardown()
 
