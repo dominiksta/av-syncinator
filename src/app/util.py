@@ -94,23 +94,27 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
     cmd = ffmpeg + ' -y -i "' + fname[0] + fname[1] + '" "' + fname[0] + '.wav"'
 
     Log.info(cmd)
-    # When using pyinstaller on windows, stdout and stderr seem to not open
-    # correctly. The following command was the only way I could find to have
-    # something that would run silently in all situations (except when using
-    # pyinstaller it pops up a little console window on windows - but in all
-    # other situations its silent).
-    ret = subprocess.check_call(
-        cmd, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE
-    )
-
-    if os.name != 'nt': ret = os.WEXITSTATUS(ret)
-    if ret != 0:
-        raise Exception(
-            "`" + cmd + " ` failed with nonzero exit code: " + str(ret)
+    try:
+        # When using pyinstaller on windows, stdout and stderr seem to not open
+        # correctly. The following command was the only way I could find to have
+        # something that would run silently in all situations (except when using
+        # pyinstaller it pops up a little console window on windows - but in all
+        # other situations its silent).
+        ret = subprocess.check_call(
+            cmd, stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE
         )
 
-    os.chdir(prevdir)
+        if os.name != 'nt': ret = os.WEXITSTATUS(ret)
+        if ret != 0:
+            raise Exception(
+                "`" + cmd + " ` failed with nonzero exit code: " + str(ret)
+            )
+    except: raise # We exit the function when an error is raised but we still
+                  # want to chdir to prevdir
+    finally:
+        os.chdir(prevdir)
+
     os.replace(os.path.dirname(videofile) + os.sep + fname[0] + '.wav',
                TEMPDIR + fname[0] + '.wav')
 
