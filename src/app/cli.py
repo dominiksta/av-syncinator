@@ -1,4 +1,4 @@
-import os
+import os, sys
 import logger
 import common
 from util import timestamps_video_and_video_for_file
@@ -32,7 +32,7 @@ try:
     args = parser.parse_args()
 except:
     on_closing()
-    exit(1)
+    sys.exit(1)
 
 if args.lang != None: set_locale(args.lang)
 
