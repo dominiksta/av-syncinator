@@ -2,12 +2,15 @@ import os
 from statistics import mean
 import matplotlib.pyplot as plt
 from localisation import translate as _
+import logger
 
+Log = logger.Logger.get_instance()
 
 def plot_sync_accuracy(
         timestamps_video: list[int], timestamps_audio: list[int],
         output_folder = None,
 ) -> None:
+    Log.info('plotting: ' + str(timestamps_video) + ',' + str(timestamps_audio))
     timestamps_audio = timestamps_audio[0:len(timestamps_video)]
     timestamps_video = timestamps_video[0:len(timestamps_audio)]
     def list_diff(l1, l2): return [abs(l1[i] - l2[i]) for i in range(0, len(l1))]

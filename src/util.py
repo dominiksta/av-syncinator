@@ -1,5 +1,6 @@
 import cv2
 import os
+import logger
 from time import time as curr_time
 from subprocess import DEVNULL, STDOUT, check_call
 import numpy as np
@@ -10,6 +11,9 @@ FFMPEG = which("ffmpeg")
 if FFMPEG == None: raise Exception("ffmpeg not found in PATH")
 
 TEMP_DIR = '..' + os.sep + 'data' + os.sep + 'temp' + os.sep
+
+Log = logger.Logger.get_instance()
+
 
 def color_percent_in_img(img: np.array, rgb, diff) -> int:
     """
@@ -47,7 +51,9 @@ def white_timestamps_for_vidcap(
     """
     success, img = vidcap.read()
 
-    print("Starting Video Processing")
+    Log.info('Starting Video Processing')
+    Log.info('tolerance_color: ' + str(tolerance_color))
+    Log.info('tolerance_color_ratio: ' + str(tolerance_color_ratio))
 
     last_white = False
     timestamps = []
@@ -66,12 +72,11 @@ def white_timestamps_for_vidcap(
             last_white = True
         else: last_white = False
         if (curr_time() - last_progress_time) > 1:
-            print("Progress: " + str(int((time / vid_end) * 100)) + "%")
-            # print(timestamps)
+            Log.info("Progress: " + str(int((time / vid_end) * 100)) + "%")
             last_progress_time = curr_time()
         success, img = vidcap.read()
 
-    print("Finished Video Processing")
+    Log.info("Finished Video Processing")
     return timestamps[1:]
     
 
@@ -81,6 +86,8 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
     the video file using `ffmpeg`. `videofile` should be a path using regular os
     separators.
     """
+    Log.info("Converting audio to .wav")
+
     prevdir = os.getcwd()
     os.chdir(os.path.dirname(videofile))
 
@@ -103,6 +110,8 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
 def volume_timestamps_for_wav(
         wavfile: str, interval_ms: int, min_volume_db: int
 ) -> list[int]:
+    Log.info("Findind timestamps in audio")
+
     track = AudioSegment.from_wav(wavfile)
     last_loud = False
     timestamps = []
@@ -129,15 +138,16 @@ def timestamps_video_and_video_for_file(
     Return computed timestamps of white noise in audio and mostly white images
     in video for `videofile`.
     """
-    timestamps_video = white_timestamps_for_vidcap(
-        cv2.VideoCapture(videofile),
-        video_threshold_color_diff,
-        video_threshold_color_ratio
-    )
     video_to_wav(videofile)
     timestamps_audio = volume_timestamps_for_wav(
         TEMP_DIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
         audio_interval_ms,
         audio_threshold_volume_db
     )
+    timestamps_video = white_timestamps_for_vidcap(
+        cv2.VideoCapture(videofile),
+        video_threshold_color_diff,
+        video_threshold_color_ratio
+    )
+    Log.info("Got all timestamps")
     return timestamps_video, timestamps_audio
