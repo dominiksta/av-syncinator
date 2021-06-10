@@ -44,7 +44,7 @@ class TestCode(unittest.TestCase):
     def test_video_to_wav_success(self):
         util.video_to_wav(DATADIR + 'testvid.mp4')
 
-        
+
     def test_video_to_wav_missing_file(self):
         with self.assertRaises(subprocess.CalledProcessError):
             util.video_to_wav(DATADIR + 'estvid.mp4')
@@ -70,6 +70,6 @@ class TestCode(unittest.TestCase):
                 ]
             )
         )
-        
+
 
 if __name__ == '__main__': unittest.main()
