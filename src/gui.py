@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 import threading, queue
 import logger
@@ -49,6 +50,7 @@ class App:
 
         master.title(_('AV-Syncinator'))
         master.geometry('500x600')
+        master.iconbitmap('res' + os.sep + 'logo' + os.sep + 'logo.ico')
         master.resizable(False, False)
 
         self.lblFilename = tk.Label(master, text=_('File to analyze: '))
