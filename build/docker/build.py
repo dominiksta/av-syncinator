@@ -1,9 +1,14 @@
 import os
 
-def build():
+def build(python_minor_version: int = 9):
     prevdir = os.getcwd()
     os.chdir('..' + os.sep + '..')
-    cmd = 'docker build -f build/docker/Dockerfile -t av-syncinator:latest .'
+    cmd = f"""
+    docker build
+        --build-arg PYTHON_MINOR_VERSION={python_minor_version}
+        -f build/docker/Dockerfile
+        -t av-syncinator:3.{python_minor_version} .
+    """.replace("\n", "")
     print(cmd)
     os.system(cmd)
     os.chdir(prevdir)
