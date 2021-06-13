@@ -11,6 +11,8 @@ import warnings
 
 # HACK: This probably shows my lack of deeper knowledge about python more then
 # anything in this project. For now it works though.
+cwd_should = os.path.dirname(__file__)
+if os.getcwd() != cwd_should: os.chdir(cwd_should)
 sys.path.insert(0, '../app')
 import util, logger, common
 

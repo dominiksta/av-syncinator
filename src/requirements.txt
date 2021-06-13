@@ -1,5 +1,5 @@
-opencv-python===4.5.2.52
-numpy===1.20.3
-pydub===0.25.1
-matplotlib===3.4.2
-pyinstaller===4.3
+opencv-python>=4
+numpy>=1.20
+pydub>=0.25
+matplotlib>=3.4
+pyinstaller>=4.3

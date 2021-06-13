@@ -1,11 +1,12 @@
 import cv2
 import os
+import shutil
 import logger
 from time import time as curr_time
 import subprocess
 import numpy as np
 from pydub import AudioSegment
-from common import TEMPDIR, FFMPEG
+import common
 
 Log = logger.Logger.get_instance()
 
@@ -75,7 +76,7 @@ def white_timestamps_for_vidcap(
     return timestamps[1:]
     
 
-def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
+def video_to_wav(videofile: str) -> None:
     """
     Convert a video file given by `videofile` to a .wav in the same folder as
     the video file using `ffmpeg`. `videofile` should be a path using regular os
@@ -87,7 +88,7 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
     os.chdir(os.path.dirname(videofile))
 
     fname = os.path.splitext(os.path.basename(videofile))
-    cmd = ffmpeg + ' -y -i "' + fname[0] + fname[1] + '" "' + fname[0] + '.wav"'
+    cmd = [common.FFMPEG, '-y', '-i', fname[0] + fname[1], fname[0] + '.wav']
 
     Log.info(cmd)
     try:
@@ -111,8 +112,8 @@ def video_to_wav(videofile: str, ffmpeg = FFMPEG) -> None:
     finally:
         os.chdir(prevdir)
 
-    os.replace(os.path.dirname(videofile) + os.sep + fname[0] + '.wav',
-               TEMPDIR + fname[0] + '.wav')
+    shutil.move(os.path.dirname(videofile) + os.sep + fname[0] + '.wav',
+                common.TEMPDIR + fname[0] + '.wav')
 
 
 def volume_timestamps_for_wav(
@@ -148,7 +149,7 @@ def timestamps_video_and_video_for_file(
     """
     video_to_wav(videofile)
     timestamps_audio = volume_timestamps_for_wav(
-        TEMPDIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
+        common.TEMPDIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
         audio_interval_ms,
         audio_threshold_volume_db
     )
