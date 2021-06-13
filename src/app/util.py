@@ -7,6 +7,7 @@ import subprocess
 import numpy as np
 from pydub import AudioSegment
 import common
+from typing import List, Tuple
 
 Log = logger.Logger.get_instance()
 
@@ -39,7 +40,7 @@ def color_percent_in_img(img: np.array, rgb, diff) -> int:
 def white_timestamps_for_vidcap(
         vidcap: cv2.VideoCapture, tolerance_color: int,
         tolerance_color_ratio: int,
-) -> list[int]:
+) -> List[int]:
     """
     Return a list of integer timestamps in ms corresponding to the start times
     of mostly white frames in `vidcap` relative to the start of the video. May
@@ -118,7 +119,7 @@ def video_to_wav(videofile: str) -> None:
 
 def volume_timestamps_for_wav(
         wavfile: str, interval_ms: int, min_volume_db: int
-) -> list[int]:
+) -> List[int]:
     Log.info("Findind timestamps in audio")
 
     track = AudioSegment.from_wav(wavfile)
@@ -142,7 +143,7 @@ def timestamps_video_and_video_for_file(
         video_threshold_color_ratio: int = 0.7,
         audio_interval_ms: int = 10,
         audio_threshold_volume_db: int = -100,
-) -> tuple[int, int]:
+) -> Tuple[int, int]:
     """
     Return computed timestamps of white noise in audio and mostly white images
     in video for `videofile`.

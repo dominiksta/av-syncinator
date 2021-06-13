@@ -3,11 +3,12 @@ from statistics import mean
 import matplotlib.pyplot as plt
 from localisation import translate as _
 import logger
+from typing import List
 
 Log = logger.Logger.get_instance()
 
 def plot_sync_accuracy(
-        timestamps_video: list[int], timestamps_audio: list[int],
+        timestamps_video: List[int], timestamps_audio: List[int],
         output_folder = None,
 ) -> None:
     Log.info('plotting: ' + str(timestamps_video) + ',' + str(timestamps_audio))
