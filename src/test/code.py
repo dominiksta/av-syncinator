@@ -40,6 +40,7 @@ class TestCode(unittest.TestCase):
     def test_color_percent_0_diff(self):
         img = cv2.imread(DATADIR + 'testvid_src' + os.sep + 'white.png')
         res = util.color_percent_in_img(img, [0, 0, 0], 50)
+        self.assertEqual(False, True)
         self.assertEqual(res, 0)
 
 

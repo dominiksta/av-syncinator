@@ -17,9 +17,11 @@ def run_tests(python_minor_version: int = 9):
         /src/test/code.py
     """.replace("\n", "")
     print(cmd)
-    os.system(cmd)
+    ret = os.system(cmd)
+    if os.name != 'nt': ret = os.WEXITSTATUS(ret)
 
     os.chdir(prevdir)
+    sys.exit(ret)
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2: run_tests(int(sys.argv[1]))
