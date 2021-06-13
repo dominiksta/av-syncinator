@@ -6,8 +6,9 @@ MIN_PYTHON = (3, 7)
 if sys.version_info < MIN_PYTHON:
     sys.exit("Python %s.%s or later is required.\n" % MIN_PYTHON)
 
+
 FFMPEG = None
-APPDIR = '..' + os.sep
+APPDIR = 'avsyncinator' + os.sep
 TEMPDIR = (os.getenv("TMP") if os.name == 'nt' else '/tmp') + os.sep \
     + "_AVSyncinator" + os.sep
 

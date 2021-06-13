@@ -1,8 +1,8 @@
 import os
 from statistics import mean
 import matplotlib.pyplot as plt
-from localisation import translate as _
-import logger
+from .localisation import translate as _
+from . import logger
 from typing import List
 
 Log = logger.Logger.get_instance()

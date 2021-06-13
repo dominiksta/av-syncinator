@@ -1,14 +1,14 @@
 import os
 import tkinter as tk
 import threading, queue
-import logger
-import common; common.dirsetup()
+from . import logger
+from .. import dirsetup, dirteardown, APPDIR
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo, showerror
-from localisation import translate as _
-from util import timestamps_video_and_video_for_file
-from testdata import testdata
-import plotting
+from .localisation import translate as _
+from .util import timestamps_video_and_video_for_file
+from .testdata import testdata
+from . import plotting
 import sys
 
 Log = logger.Logger.get_instance()
@@ -51,7 +51,7 @@ class App:
 
         master.title(_('AV-Syncinator'))
         master.geometry('500x600')
-        master.iconbitmap(common.APPDIR + 'res' + os.sep + 'logo' + os.sep + 'logo.ico')
+        master.iconbitmap(APPDIR + 'res' + os.sep + 'logo' + os.sep + 'logo.ico')
         master.resizable(False, False)
         master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
@@ -171,7 +171,7 @@ class App:
 
 
     def on_closing(self):
-        common.dirteardown()
+        dirteardown()
         root.destroy()
 
 

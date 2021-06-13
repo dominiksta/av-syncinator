@@ -1,12 +1,12 @@
 import cv2
 import os
 import shutil
-import logger
+from . import logger
 from time import time as curr_time
 import subprocess
 import numpy as np
 from pydub import AudioSegment
-import common
+from .. import TEMPDIR, FFMPEG
 from typing import List, Tuple
 
 Log = logger.Logger.get_instance()
@@ -89,7 +89,7 @@ def video_to_wav(videofile: str) -> None:
     os.chdir(os.path.dirname(videofile))
 
     fname = os.path.splitext(os.path.basename(videofile))
-    cmd = [common.FFMPEG, '-y', '-i', fname[0] + fname[1], fname[0] + '.wav']
+    cmd = [FFMPEG, '-y', '-i', fname[0] + fname[1], fname[0] + '.wav']
 
     Log.info(cmd)
     try:
@@ -114,7 +114,7 @@ def video_to_wav(videofile: str) -> None:
         os.chdir(prevdir)
 
     shutil.move(os.path.dirname(videofile) + os.sep + fname[0] + '.wav',
-                common.TEMPDIR + fname[0] + '.wav')
+                TEMPDIR + fname[0] + '.wav')
 
 
 def volume_timestamps_for_wav(
@@ -150,7 +150,7 @@ def timestamps_video_and_video_for_file(
     """
     video_to_wav(videofile)
     timestamps_audio = volume_timestamps_for_wav(
-        common.TEMPDIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
+        TEMPDIR + os.path.splitext(os.path.basename(videofile))[0] + '.wav',
         audio_interval_ms,
         audio_threshold_volume_db
     )

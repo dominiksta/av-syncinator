@@ -14,7 +14,7 @@ def run_tests(python_minor_version: int = 9):
         -v {pwd}/data:/data
         --entrypoint "/usr/local/bin/python3"
         av-syncinator:3.{python_minor_version}
-        /src/test/code.py
+        -m avsyncinator.test.code
     """.replace("\n", "")
     print(cmd)
     ret = os.system(cmd)

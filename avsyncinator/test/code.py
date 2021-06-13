@@ -5,25 +5,17 @@ basic goes wrong.
 
 import unittest
 import cv2
-import os, sys
-import subprocess
+import os
 import warnings
-
-# HACK: This probably shows my lack of deeper knowledge about python more then
-# anything in this project. For now it works though.
-cwd_should = os.path.dirname(__file__)
-if os.getcwd() != cwd_should: os.chdir(cwd_should)
-sys.path.insert(0, '../app')
-import util, logger, common
-
-Log = logger.Logger.get_instance()
-Log.output_function = lambda msg: None
-DATADIR = '..' + os.sep + '..' + os.sep + 'data' + os.sep
+import subprocess
+from avsyncinator.app import util
+from . import DATADIR
+from .. import dirsetup, dirteardown
 
 
 class TestCode(unittest.TestCase):
-    def setUp(self): common.dirsetup()
-    def tearDown(self): common.dirteardown()
+    def setUp(self): dirsetup()
+    def tearDown(self): dirteardown()
 
     def test_color_percent_100(self):
         img = cv2.imread(DATADIR + 'testvid_src' + os.sep + 'black.png')

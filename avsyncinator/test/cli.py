@@ -1,6 +1,7 @@
 import unittest
 import os
 import subprocess
+from . import DATADIR
 
 class TestCommandLineInterface(unittest.TestCase):
 
@@ -17,8 +18,8 @@ class TestCommandLineInterface(unittest.TestCase):
         if os.name != 'nt':
             print('CLI only gets tested on windows currently')
             return
-        exe = '..' + os.sep + '..' + os.sep + 'build' + os.sep + 'windows' + \
-            os.sep + 'dist' + os.sep + 'av-syncinator-cli.exe'
+        exe = 'build' + os.sep + 'windows' + os.sep + 'dist' + \
+            os.sep + 'av-syncinator-cli.exe'
         if not os.path.exists(exe):
             print('Please build an exe file first (build-cli.bat)')
         self.assertTrue(os.path.exists(exe))
@@ -35,7 +36,7 @@ class TestCommandLineInterface(unittest.TestCase):
             ret = self._run_cmd_silently(exe + ' nonexistent.mpv')
             self.assertEqual(ret, 1)
 
-        cmd = exe + ' -o . ..' + os.sep + '..' + os.sep + 'data' + os.sep + 'testvid.mp4'
+        cmd = exe + ' -o . ' + DATADIR + 'testvid.mp4'
         ret = self._run_cmd_silently(cmd)
         self.assertEqual(ret, 0)
         self.assertTrue(os.path.exists('accuracy.png'))

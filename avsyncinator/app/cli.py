@@ -1,16 +1,15 @@
 import os, sys
-import logger
-import common; common.dirsetup()
-from util import timestamps_video_and_video_for_file
-from localisation import set_locale
+from . import logger
+from .. import dirteardown
+from .util import timestamps_video_and_video_for_file
+from .localisation import set_locale
 from argparse import ArgumentParser
-from plotting import plot_sync_accuracy
-from testdata import testdata
+from .plotting import plot_sync_accuracy
+from .testdata import testdata
 
-def on_closing(): common.dirteardown()
+def on_closing(): dirteardown()
 
-Log = logger.Logger.get_instance().log
-lvl = logger.LogLvl
+logger.Logger.get_instance()
 
 parser = ArgumentParser(description='Command Line Interface for AV-Syncinator')
 
