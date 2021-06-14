@@ -1,4 +1,4 @@
-<img src="src/res/logo/logo-256x256.png" height="128" align="right"/>
+<img src="avsyncinator/res/logo/logo-256x256.png" height="128" align="right"/>
 
 # AV-Syncinator
 
