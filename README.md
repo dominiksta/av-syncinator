@@ -2,6 +2,9 @@
 
 # AV-Syncinator
 
+![License GPL 3](https://img.shields.io/github/license/dominiksta/av-syncinator)
+![Build Status](https://img.shields.io/github/workflow/status/dominiksta/av-syncinator/CI/master)
+
 AV-Syncinator is a small utility to measure
 [Audio-Video-Synchronization](https://en.wikipedia.org/wiki/Audio-to-video_synchronization).
 It works by analyzing a recording of the playback of a specifically prepared
