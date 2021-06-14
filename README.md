@@ -2,8 +2,8 @@
 
 # AV-Syncinator
 
-![License GPL 3](https://img.shields.io/github/license/dominiksta/av-syncinator)
-![Build Status](https://img.shields.io/github/workflow/status/dominiksta/av-syncinator/CI/master)
+[![License GPL 3](https://img.shields.io/github/license/dominiksta/av-syncinator)][LICENSE]
+[![Build Status](https://img.shields.io/github/workflow/status/dominiksta/av-syncinator/CI/master)][BUILD]
 
 AV-Syncinator is a small utility to measure
 [Audio-Video-Synchronization](https://en.wikipedia.org/wiki/Audio-to-video_synchronization).
@@ -27,3 +27,6 @@ After some time, you will see a plot of the results:
 <img src="data/screenshot.png"/>
 
 [More documentation will follow.]
+
+[LICENSE]: https://github.com/dominiksta/av-syncinator/blob/master/LICENSE
+[BUILD]: https://github.com/dominiksta/av-syncinator/actions
