@@ -4,7 +4,7 @@ from .. import dirteardown
 from .util import timestamps_video_and_video_for_file
 from .localisation import set_locale
 from argparse import ArgumentParser
-from .plotting import plot_sync_accuracy
+from . import processing
 from .testdata import testdata
 
 def on_closing(): dirteardown()
@@ -17,6 +17,8 @@ parser.add_argument('filename', help='Path to the video file to analyze (mkv or 
 parser.add_argument('-l', '--lang', type=str, help='Set localisation')
 parser.add_argument('-o', '--output-directory', type=str,
                     help='Save figures to this directory instead of showing them')
+parser.add_argument('-f', '--output-format', type=str, help='Either .csv or .png',
+                    default='.csv')
 parser.add_argument('--audio-interval', type=int, default=10,
                     help='Step size for scanning the audio [ms]')
 parser.add_argument('--audio-threshold', type=int, default=-100,
@@ -49,5 +51,10 @@ else:
         audio_threshold_volume_db=args.audio_threshold,
     )
 
-plot_sync_accuracy(tv, ta, args.output_directory)
+if args.output_format == '.png':
+    processing.plot_sync_accuracy(tv, ta, args.output_directory)
+else:
+    if args.output_directory == None: args.output_directory = os.getcwd()
+    processing.save_as_csv(tv, ta, args.output_directory + os.sep + 'out.csv')
+
 on_closing()

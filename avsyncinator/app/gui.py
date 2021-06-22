@@ -1,14 +1,15 @@
 import os
 import tkinter as tk
+from tkinter import ttk
 import threading, queue
 from . import logger
 from .. import dirsetup, dirteardown, APPDIR
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter.messagebox import showinfo, showerror
 from .localisation import translate as _
 from .util import timestamps_video_and_video_for_file
 from .testdata import testdata
-from . import plotting
+from . import processing
 import sys
 
 Log = logger.Logger.get_instance()
@@ -103,6 +104,16 @@ class App:
         )
         self.btnVideoColorRatioInfo.place(x=350, y=68)
 
+        self.comboOutputFormat = ttk.Combobox(self.master, values = [
+            _('Plot Image'), _('.csv File')
+        ])
+        self.comboOutputFormat.place(x=80, y=102)
+        self.comboOutputFormat.current(0)
+        self.comboOutputFormatInfo = tk.Button(
+            master, text='?', command=lambda: self._info('output_format')
+        )
+        self.comboOutputFormatInfo.place(x=230, y=100)
+
         self.logOutput = LogOutput()
         self.logOutput.place(x=10, y=140)
         self.logOutput.config(width=480, height=440)
@@ -116,7 +127,7 @@ class App:
 
     def analyze(self):
         threading.Thread(target=self._analyze).start()
-        self.display_when_ready()
+        self.action_after_analysis()
 
 
     def _analyze(self):
@@ -141,14 +152,23 @@ class App:
             showerror('Error', 'Unexpected error:' + str(sys.exc_info()[0]))
 
 
-    def display_when_ready(self):
-        """ Check if there is something in the queue, then display. """
+    def action_after_analysis(self):
+        """ Check if there is something in the queue, then take action. """
         try:
             res = self.analysis_queue.get(0)
-            plotting.plot_sync_accuracy(res[0], res[1])
+            if self.comboOutputFormat.get() == _('.csv File'):
+                filename = asksaveasfilename(defaultextension = '.csv')
+                processing.save_as_csv(res[0], res[1], filename)
+            else:
+                processing.plot_sync_accuracy(res[0], res[1])
         except queue.Empty:
-            self.master.after(100, self.display_when_ready)
-
+            self.master.after(100, self.action_after_analysis)
+        except PermissionError:
+            Log.error("Could not open file")
+            showerror('Error', _(
+                'Could not open file. Please check that is not opened in ' +
+                'another application'
+            ))
 
     def _openfile(self):
         self.arg_selected_file.set(askopenfilename(filetypes=[
@@ -165,7 +185,12 @@ class App:
             'video_color_diff': _('How much the color in the video may differ' +
                                   ' from white [0-255] to trigger a data point.'),
             'video_color_ratio': _('How much of the screen has to be white to' +
-                                   ' trigger a data point [0-1]')
+                                   ' trigger a data point [0-1]'),
+            'output_format': _(
+                'The result of the analysis can either be saved as a .csv file ' +
+                'for further processing (.csv can for example be opened up in ' +
+                'Excel) or as a plot.'
+            )
         }
         showinfo(_("Parameter Description"), info[key])
 
