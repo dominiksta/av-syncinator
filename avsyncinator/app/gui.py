@@ -42,8 +42,8 @@ class App:
         self.master = master
         self.arg_selected_file = tk.StringVar()
         self.arg_selected_file.set('')
-        self.arg_audio_threshold = tk.IntVar(); self.arg_audio_threshold.set(-100)
-        self.arg_audio_interval = tk.IntVar(); self.arg_audio_interval.set(10)
+        self.arg_audio_threshold = tk.IntVar(); self.arg_audio_threshold.set(-50)
+        self.arg_audio_interval = tk.IntVar(); self.arg_audio_interval.set(1)
         self.arg_video_color_diff= tk.IntVar(); self.arg_video_color_diff.set(30)
         self.arg_video_color_ratio= tk.StringVar(); self.arg_video_color_ratio.set('0.7')
         self._log_output = tk.StringVar(); self._log_output.set('hi')

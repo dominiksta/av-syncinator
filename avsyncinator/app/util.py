@@ -147,8 +147,8 @@ def timestamps_video_and_video_for_file(
         videofile: str,
         video_threshold_color_diff: int = 30,
         video_threshold_color_ratio: int = 0.7,
-        audio_interval_ms: int = 10,
-        audio_threshold_volume_db: int = -100,
+        audio_interval_ms: int = 1,
+        audio_threshold_volume_db: int = -50,
 ) -> Tuple[int, int]:
     """
     Return computed timestamps of white noise in audio and mostly white images
