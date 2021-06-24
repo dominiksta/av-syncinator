@@ -1,10 +1,12 @@
 import os
 from statistics import mean
+import datetime
 import matplotlib.pyplot as plt
 import csv
 from .localisation import translate as _
 from . import logger
-from typing import List, Tuple
+from .. import VERSION
+from typing import List, Tuple, Dict
 
 Log = logger.Logger.get_instance()
 
@@ -41,15 +43,30 @@ def plot_sync_accuracy(
 
 
 def save_as_csv(
-        timestamps_video: List[int], timestamps_audio: List[int], filename: str
+        timestamps_video: List[int], timestamps_audio: List[int], filename: str,
+        meta_additional: Dict[str, str] = {}
 ) -> None:
     Log.info('saving: ' + str(timestamps_video) + ',' + str(timestamps_audio))
-    timestamps_audio, timestamps_video = \
-        _preprocess(timestamps_audio, timestamps_video)
     Log.info('saving to file: ' + filename)
 
+    timestamps_audio, timestamps_video = \
+        _preprocess(timestamps_audio, timestamps_video)
+
+    meta = {
+        'version': VERSION,
+        'filename': filename,
+        'datetime(utc)': str(datetime.datetime.utcnow()),
+    }
+    for k in meta_additional: meta[k] = meta_additional[k]
+
     with open(filename, 'w', newline='\n') as csvfile:
-        writer = csv.writer(csvfile, delimiter=';')
+        writer = csv.writer(csvfile, dialect='excel', delimiter=';')
+
+        writer.writerow(meta.keys())
+        writer.writerow(meta.values())
+        writer.writerow('')
+        writer.writerow('')
+
         writer.writerow(['timestamps_audio', 'timestamps_video'])
         for i in range(0, len(timestamps_audio)):
             writer.writerow([timestamps_audio[i], timestamps_video[i]]) 

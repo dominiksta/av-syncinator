@@ -158,7 +158,12 @@ class App:
             res = self.analysis_queue.get(0)
             if self.comboOutputFormat.get() == _('.csv File'):
                 filename = asksaveasfilename(defaultextension = '.csv')
-                processing.save_as_csv(res[0], res[1], filename)
+                processing.save_as_csv(res[0], res[1], filename, {
+                    'video_color_diff': self.arg_video_color_diff.get(),
+                    'video_color_ratio': self.arg_video_color_ratio.get(),
+                    'audio_interval': self.arg_audio_interval.get(),
+                    'audio_threshold': self.arg_audio_threshold.get(),
+                })
             else:
                 processing.plot_sync_accuracy(res[0], res[1])
         except queue.Empty:
