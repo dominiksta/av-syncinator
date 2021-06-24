@@ -134,8 +134,6 @@ def volume_timestamps_for_wav(
             # between start and end of white noise in the testvideo is 1000ms.
             if not last_loud and (len(timestamps) == 0 or \
                                   pos_ms - timestamps[-1] > 1100):
-                if len(timestamps) > 0:
-                    Log.info(str(pos_ms) + " - " + str(timestamps[-1]))
                 timestamps.append(pos_ms)
             last_loud = True
         else: last_loud = False
