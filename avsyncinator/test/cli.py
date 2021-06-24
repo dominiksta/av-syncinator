@@ -39,8 +39,8 @@ class TestCommandLineInterface(unittest.TestCase):
         cmd = exe + ' -o . ' + DATADIR + 'testvid.mp4'
         ret = self._run_cmd_silently(cmd)
         self.assertEqual(ret, 0)
-        self.assertTrue(os.path.exists('accuracy.png'))
-        os.remove('accuracy.png')
+        self.assertTrue(os.path.exists('out.csv'))
+        os.remove('out.csv')
 
 if __name__ == '__main__':
     unittest.main()
