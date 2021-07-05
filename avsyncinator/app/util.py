@@ -153,8 +153,7 @@ def _match_nearest_list_items(l1: List[int], l2: List[int]) -> List[int]:
         return res
 
     l3 = []
-    for i in range(0, len(l1)):
-        l3.append(nearest_int_in_list(l1[i], l2))
+    for i in range(0, len(l1)): l3.append(nearest_int_in_list(l1[i], l2))
 
     return l3
 

@@ -15,7 +15,7 @@ parser = ArgumentParser(description='Command Line Interface for AV-Syncinator')
 
 parser.add_argument('filename', help='Path to the video file to analyze (mkv or mp4)')
 parser.add_argument('-l', '--lang', type=str, help='Set localisation')
-parser.add_argument('-o', '--output-directory', type=str,
+parser.add_argument('-o', '--output-directory', type=str, default=os.getcwd(),
                     help='Save figures to this directory instead of showing them')
 parser.add_argument('-f', '--output-format', type=str, help='Either .csv or .png',
                     default='.csv')
@@ -38,9 +38,8 @@ except:
 
 if args.lang != None: set_locale(args.lang)
 
-if args.output_directory != None:
-    if not os.path.exists(args.output_directory):
-        raise Exception("Invalid Directory: " + args.output_directory)
+if not os.path.exists(args.output_directory):
+    raise Exception("Invalid Directory: " + args.output_directory)
 
 if args.filename == '__test__':
     tv, ta = testdata['timestamps_video'], testdata['timestamps_audio']

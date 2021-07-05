@@ -19,9 +19,11 @@ Changelog
 ### Changed
 
 - New default values for `audio_threshold` and `audio_interval`
-- CLI now outputs `.csv` files by default (can be changed with the `-f` flag)
 - `testvid.mp4` is now slightly more accurate
 - `data/example/local.mkv` reflects new `testvid.mp4`
+- CLI now outputs `.csv` files by default (can be changed with the `-f` flag)
+- CLI now uses the current directory as default (so `-o` needs to be specified
+  in less situations)
 
 `0.0.1` - _2021-06-14_
 ----------------------------------------------------------------------
