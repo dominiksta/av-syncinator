@@ -7,6 +7,9 @@ Changelog
 ### Added
 
 - Ability to save to `.csv` (results + some metadata)
+- By default, AV-Syncinator now attempts to ignore audio stutters to not distort
+  measured asynchronicity for timestamps after the stutter. Can be disabled by
+  either a checkbox in the GUI or the new `--no-try-match` flag in the CLI.
 
 ### Fixed
 

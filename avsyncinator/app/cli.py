@@ -27,6 +27,8 @@ parser.add_argument('--video-color-diff', type=int, default=30,
                     help='How much the color in the video may differ from white [0-255]')
 parser.add_argument('--video-color-ratio', type=int, default=0.7,
                     help='How much of the screen has to be white [0-1]')
+parser.add_argument('--no-try-match', action="store_true",
+                    help='Don\'t try ignoring stutters')
 
 try:
     args = parser.parse_args()
@@ -45,10 +47,11 @@ if args.filename == '__test__':
 else:
     tv, ta = timestamps_video_and_audio_for_file(
         videofile=args.filename,
-        video_threshold_color_diff=args.video_color_diff,
-        video_threshold_color_ratio=args.video_color_ratio,
-        audio_interval_ms=args.audio_interval,
-        audio_threshold_volume_db=args.audio_threshold,
+        video_threshold_color_diff = args.video_color_diff,
+        video_threshold_color_ratio = args.video_color_ratio,
+        audio_interval_ms = args.audio_interval,
+        audio_threshold_volume_db = args.audio_threshold,
+        try_ignore_stutters_by_matching = not args.no_try_match,
     )
 
 if args.output_format == '.png':
@@ -60,6 +63,7 @@ else:
         'video_color_ratio': args.video_color_ratio,
         'audio_interval': args.audio_interval,
         'audio_threshold': args.audio_threshold,
+        'try_match': not args.no_try_match,
     })
 
 on_closing()

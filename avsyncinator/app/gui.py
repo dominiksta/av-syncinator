@@ -44,8 +44,9 @@ class App:
         self.arg_selected_file.set('')
         self.arg_audio_threshold = tk.IntVar(); self.arg_audio_threshold.set(-50)
         self.arg_audio_interval = tk.IntVar(); self.arg_audio_interval.set(1)
-        self.arg_video_color_diff= tk.IntVar(); self.arg_video_color_diff.set(30)
-        self.arg_video_color_ratio= tk.StringVar(); self.arg_video_color_ratio.set('0.7')
+        self.arg_video_color_diff = tk.IntVar(); self.arg_video_color_diff.set(30)
+        self.arg_video_color_ratio = tk.StringVar(); self.arg_video_color_ratio.set('0.7')
+        self.arg_try_match = tk.BooleanVar(); self.arg_try_match.set(True)
         self._log_output = tk.StringVar(); self._log_output.set('hi')
 
         self.analysis_queue = queue.Queue()
@@ -107,22 +108,30 @@ class App:
         self.comboOutputFormat = ttk.Combobox(self.master, values = [
             _('Plot Image'), _('.csv File')
         ])
-        self.comboOutputFormat.place(x=80, y=102)
+        self.comboOutputFormat.place(x=12, y=102)
         self.comboOutputFormat.current(0)
         self.comboOutputFormatInfo = tk.Button(
             master, text='?', command=lambda: self._info('output_format')
         )
-        self.comboOutputFormatInfo.place(x=230, y=100)
+        self.comboOutputFormatInfo.place(x=160, y=100)
 
-        self.logOutput = LogOutput()
-        self.logOutput.place(x=10, y=140)
-        self.logOutput.config(width=480, height=440)
-        logger.Logger.get_instance().output_function = self.logOutput.log
-        Log.info('Startup')
+        self.chkTryMatch = tk.Checkbutton(master, text=_('Try ignoring stutters'),
+                                          var=self.arg_try_match)
+        self.chkTryMatch.place(x=200, y=100)
+        self.btnTryMatchInfo = tk.Button(
+            master, text='?', command=lambda: self._info('try_match')
+        )
+        self.btnTryMatchInfo.place(x=350, y=98)
 
         self.btnSubmit = tk.Button(master, text=_('Analyze'), command=self.analyze,
                                    bg='lightblue')
-        self.btnSubmit.place(x=12, y=100)
+        self.btnSubmit.place(x=12, y=135)
+
+        self.logOutput = LogOutput()
+        self.logOutput.place(x=10, y=170)
+        self.logOutput.config(width=480, height=420)
+        logger.Logger.get_instance().output_function = self.logOutput.log
+        Log.info('Startup')
 
 
     def analyze(self):
@@ -145,6 +154,7 @@ class App:
                     video_threshold_color_ratio = float(self.arg_video_color_ratio.get()),
                     audio_interval_ms           = self.arg_audio_interval.get(),
                     audio_threshold_volume_db   = self.arg_audio_threshold.get(),
+                    try_ignore_stutters_by_matching = self.arg_try_match.get(),
                 )
             self.analysis_queue.put((tv, ta))
         except:
@@ -163,6 +173,7 @@ class App:
                     'video_color_ratio': self.arg_video_color_ratio.get(),
                     'audio_interval': self.arg_audio_interval.get(),
                     'audio_threshold': self.arg_audio_threshold.get(),
+                    'try_match': self.arg_try_match.get(),
                 })
             else:
                 processing.plot_sync_accuracy(res[0], res[1])
@@ -195,6 +206,16 @@ class App:
                 'The result of the analysis can either be saved as a .csv file ' +
                 'for further processing (.csv can for example be opened up in ' +
                 'Excel) or as a plot.'
+            ),
+            'try_match': _(
+                'Too many stutters in the audio of the selected video file may ' +
+                'result in too many audio timestamps being recorded. This can ' +
+                'drastically influence measurements for timestamps after the ' +
+                'stutter. Therefore this toggle matches video timestamps with ' +
+                'the \'closest\' audio timestamps in order to ignore these ' +
+                'stutters. It should likely always be turned on - although it ' +
+                'may lead to incorrect results in scenarios with /really/ high ' +
+                'latency.'
             )
         }
         showinfo(_("Parameter Description"), info[key])

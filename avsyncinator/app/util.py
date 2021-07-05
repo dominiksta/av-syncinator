@@ -75,7 +75,7 @@ def white_timestamps_for_vidcap(
 
     Log.info("Finished Video Processing")
     return timestamps[1:]
-    
+
 
 def video_to_wav(videofile: str) -> None:
     """
@@ -139,7 +139,25 @@ def volume_timestamps_for_wav(
         else: last_loud = False
 
     return timestamps[1:]
-    
+
+
+def _match_nearest_list_items(l1: List[int], l2: List[int]) -> List[int]:
+    """
+    Return a list `l3` with `length == len(l1)` where for every `i in range(0,
+    len(l1))`, `l3[i]` is the element in `l2` closest to `l1[i]`.
+    """
+    def nearest_int_in_list(value: int, l: List[int]) -> int:
+        res = l[0]
+        for i in l:
+            if abs(i - value) < abs(res - value): res = i
+        return res
+
+    l3 = []
+    for i in range(0, len(l1)):
+        l3.append(nearest_int_in_list(l1[i], l2))
+
+    return l3
+
 
 def timestamps_video_and_audio_for_file(
         videofile: str,
@@ -147,6 +165,7 @@ def timestamps_video_and_audio_for_file(
         video_threshold_color_ratio: int = 0.7,
         audio_interval_ms: int = 1,
         audio_threshold_volume_db: int = -50,
+        try_ignore_stutters_by_matching = True,
 ) -> Tuple[int, int]:
     """
     Return computed timestamps of white noise in audio and mostly white images
@@ -164,4 +183,10 @@ def timestamps_video_and_audio_for_file(
         video_threshold_color_ratio
     )
     Log.info("Got all timestamps")
+
+    if try_ignore_stutters_by_matching:
+        timestamps_audio = _match_nearest_list_items(
+            timestamps_video, timestamps_audio
+        )
+
     return timestamps_video, timestamps_audio
