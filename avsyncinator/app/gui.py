@@ -7,7 +7,7 @@ from .. import dirsetup, dirteardown, APPDIR
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter.messagebox import showinfo, showerror
 from .localisation import translate as _
-from .util import timestamps_video_and_video_for_file
+from .util import timestamps_video_and_audio_for_file
 from .testdata import testdata
 from . import processing
 import sys
@@ -139,7 +139,7 @@ class App:
             if self.arg_selected_file.get() == '__test__':
                 tv, ta = testdata['timestamps_video'], testdata['timestamps_audio']
             else:
-                tv, ta = timestamps_video_and_video_for_file(
+                tv, ta = timestamps_video_and_audio_for_file(
                     videofile                   = self.arg_selected_file.get(),
                     video_threshold_color_diff  = self.arg_video_color_diff.get(),
                     video_threshold_color_ratio = float(self.arg_video_color_ratio.get()),

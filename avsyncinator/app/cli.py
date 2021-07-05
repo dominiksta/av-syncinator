@@ -1,7 +1,7 @@
 import os, sys
 from . import logger
 from .. import dirteardown
-from .util import timestamps_video_and_video_for_file
+from .util import timestamps_video_and_audio_for_file
 from .localisation import set_locale
 from argparse import ArgumentParser
 from . import processing
@@ -43,7 +43,7 @@ if args.output_directory != None:
 if args.filename == '__test__':
     tv, ta = testdata['timestamps_video'], testdata['timestamps_audio']
 else:
-    tv, ta = timestamps_video_and_video_for_file(
+    tv, ta = timestamps_video_and_audio_for_file(
         videofile=args.filename,
         video_threshold_color_diff=args.video_color_diff,
         video_threshold_color_ratio=args.video_color_ratio,

@@ -47,7 +47,7 @@ class TestCode(unittest.TestCase):
     def test_timestamps_on_example(self):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            stamps = util.timestamps_video_and_video_for_file(
+            stamps = util.timestamps_video_and_audio_for_file(
                 DATADIR + 'testvid.mp4'
             )
         self.assertEqual(

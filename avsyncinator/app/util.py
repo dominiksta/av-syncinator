@@ -141,7 +141,7 @@ def volume_timestamps_for_wav(
     return timestamps[1:]
     
 
-def timestamps_video_and_video_for_file(
+def timestamps_video_and_audio_for_file(
         videofile: str,
         video_threshold_color_diff: int = 30,
         video_threshold_color_ratio: int = 0.7,
