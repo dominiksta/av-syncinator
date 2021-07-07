@@ -19,9 +19,9 @@ parser.add_argument('-o', '--output-directory', type=str, default=os.getcwd(),
                     help='Save figures to this directory instead of showing them')
 parser.add_argument('-f', '--output-format', type=str, help='Either .csv or .png',
                     default='.csv')
-parser.add_argument('--audio-interval', type=int, default=10,
+parser.add_argument('--audio-interval', type=int, default=1,
                     help='Step size for scanning the audio [ms]')
-parser.add_argument('--audio-threshold', type=int, default=-100,
+parser.add_argument('--audio-threshold', type=int, default=-50,
                     help='The loudness of the sound to consider [dB]')
 parser.add_argument('--video-color-diff', type=int, default=30,
                     help='How much the color in the video may differ from white [0-255]')
