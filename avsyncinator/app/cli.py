@@ -44,6 +44,7 @@ if not os.path.exists(args.output_directory):
 if args.filename == '__test__':
     tv, ta = testdata['timestamps_video'], testdata['timestamps_audio']
 else:
+    if not os.path.exists(args.filename): raise Exception("Invalid File Name")
     tv, ta = timestamps_video_and_audio_for_file(
         videofile=args.filename,
         video_threshold_color_diff = args.video_color_diff,

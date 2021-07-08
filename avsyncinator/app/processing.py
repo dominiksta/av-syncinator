@@ -13,9 +13,10 @@ Log = logger.Logger.get_instance()
 def _preprocess(
         timestamps_audio: List[int], timestamps_video: List[int]
 ) -> Tuple[List[int], List[int]]:
-    if len(timestamps_audio) <= len(timestamps_video):
+    diff = abs(len(timestamps_audio) != len(timestamps_video))
+    if diff != 0:
         Log.warn(
-            "Throwing away some timestamps because there are an " +
+            "Throwing away " + str(diff) + " timestamps because there are an " +
             "unequal number of audio and video timestamps"
         )
     # cut off additional elements

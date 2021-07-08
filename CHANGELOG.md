@@ -10,6 +10,10 @@ Changelog
 - `.csv` files from CLI now are named based on the input filename instead of a
   generic `out.csv`
 
+### Fixed
+
+- CLI now throws an error immediatly when given an invalid filename
+
 
 `0.0.2` - _2021-07-05_
 ----------------------------------------------------------------------
