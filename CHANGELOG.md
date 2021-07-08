@@ -7,6 +7,8 @@ Changelog
 ### Changed
 
 - Default parameter values in CLI now adjusted to the same values as in GUI
+- `.csv` files from CLI now are named based on the input filename instead of a
+  generic `out.csv`
 
 
 `0.0.2` - _2021-07-05_

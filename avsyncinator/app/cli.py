@@ -57,7 +57,8 @@ if args.output_format == '.png':
     processing.plot_sync_accuracy(tv, ta, args.output_directory)
 else:
     if args.output_directory == None: args.output_directory = os.getcwd()
-    processing.save_as_csv(tv, ta, args.output_directory + os.sep + 'out.csv', {
+    outname = os.path.basename(os.path.splitext(args.filename)[0]) + '.csv'
+    processing.save_as_csv(tv, ta, args.output_directory + os.sep + outname, {
         'video_color_diff': args.video_color_diff,
         'video_color_ratio': args.video_color_ratio,
         'audio_interval': args.audio_interval,
