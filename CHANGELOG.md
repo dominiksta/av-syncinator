@@ -13,6 +13,7 @@ Changelog
 ### Fixed
 
 - CLI now throws an error immediatly when given an invalid filename
+- Docker build had an incorrect ENTRYPOINT
 
 
 `0.0.2` - _2021-07-05_

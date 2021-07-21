@@ -8,4 +8,4 @@ RUN pip3 install -r /requirements.txt
 
 ADD /avsyncinator /avsyncinator
 
-ENTRYPOINT ["python3", "/src/app/cli.py"]
+ENTRYPOINT ["python3", "-m", "avsyncinator.cli"]
