@@ -8,3 +8,6 @@ __pycache__/
 !/build/windows/tmp/.gitkeep
 /build/windows/dist/*
 !/build/windows/dist/.gitkeep
+
+/build/gnu+linux/dist/*
+!/build/gnu+linux/dist/.gitkeep

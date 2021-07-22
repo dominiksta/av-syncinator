@@ -32,9 +32,10 @@ def _pyinstchdir():
     if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
         global APPDIR
         APPDIR = sys._MEIPASS + os.sep
-        os.environ['PATH'] = os.environ['PATH'] + ';' + APPDIR
+        os.environ['PATH'] = os.environ['PATH'] + os.pathsep + APPDIR
 
     global FFMPEG
-    FFMPEG = APPDIR + 'ffmpeg.exe' if os.path.exists(APPDIR + 'ffmpeg.exe') \
-        else shutil.which('ffmpeg')
+    FFMPEG = shutil.which('ffmpeg')
+    if os.path.exists(APPDIR + 'ffmpeg'): FFMPEG = APPDIR + 'ffmpeg'
+    if os.path.exists(APPDIR + 'ffmpeg.exe'): FFMPEG = APPDIR + 'ffmpeg.exe'
     if FFMPEG == None: raise Exception("ffmpeg not found in PATH")
