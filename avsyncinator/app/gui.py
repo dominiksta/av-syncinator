@@ -52,86 +52,89 @@ class App:
         self.analysis_queue = queue.Queue()
 
         master.title(_('AV-Syncinator'))
-        master.geometry('500x600')
-        master.iconbitmap(APPDIR + 'res' + os.sep + 'logo' + os.sep + 'logo.ico')
+        if os.name == 'nt':
+            master.iconbitmap(APPDIR + 'res' + os.sep + 'logo' + os.sep + 'logo.ico')
         master.resizable(False, False)
         master.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.frame = tk.Frame(self.master, borderwidth=10)
 
-        self.lblFilename = tk.Label(master, text=_('File to analyze: '))
-        self.lblFilename.place(x=10, y=10)
-        self.txtFilename = tk.Entry(master, textvariable=self.arg_selected_file, width=50)
-        self.txtFilename.place(x=120, y=12)
-        self.btnBrowse = tk.Button(master, text=_('Browse'), command=self._openfile)
-        self.btnBrowse.place(x=430, y=8)
+        self.lblFilename = tk.Label(self.frame, text=_('File to analyze: '))
+        self.lblFilename.grid(row=0, column=0, sticky='w')
+        self.txtFilename = tk.Entry(self.frame, textvariable=self.arg_selected_file, width=50)
+        self.txtFilename.grid(row=0, column=1, columnspan=5)
+        self.btnBrowse = tk.Button(self.frame, text=_('Browse'), command=self._openfile)
+        self.btnBrowse.grid(row=0, column=7, padx=10)
 
 
-        self.lblAudioThreshold = tk.Label(master, text=_('Audio Threshold: '))
-        self.lblAudioThreshold.place(x=10, y=40)
+        self.lblAudioThreshold = tk.Label(self.frame, text=_('Audio Threshold: '))
+        self.lblAudioThreshold.grid(row=1, column=0, sticky='w', pady=5)
         self.txtAudioThreshold = tk.Entry(
-            master, textvariable=self.arg_audio_threshold, width=5)
-        self.txtAudioThreshold.place(x=120, y=42)
+            self.frame, textvariable=self.arg_audio_threshold, width=5)
+        self.txtAudioThreshold.grid(row=1, column=1)
         self.btnAudioThresholdInfo = tk.Button(
-            master, text='?', command=lambda: self._info('audio_threshold')
+            self.frame, text='?', command=lambda: self._info('audio_threshold')
         )
-        self.btnAudioThresholdInfo.place(x=160, y=38)
+        self.btnAudioThresholdInfo.grid(row=1, column=2, sticky='w')
 
-        self.lblAudioInterval = tk.Label(master, text=_('Audio Interval: '))
-        self.lblAudioInterval.place(x=10, y=70)
+        self.lblAudioInterval = tk.Label(self.frame, text=_('Audio Interval: '))
+        self.lblAudioInterval.grid(row=1, column=3, sticky='w')
         self.txtAudioInterval = tk.Entry(
-            master, textvariable=self.arg_audio_interval, width=5)
-        self.txtAudioInterval.place(x=120, y=72)
+            self.frame, textvariable=self.arg_audio_interval, width=5)
+        self.txtAudioInterval.grid(row=1, column=4)
         self.btnAudioIntervalInfo = tk.Button(
-            master, text='?', command=lambda: self._info('audio_interval')
+            self.frame, text='?', command=lambda: self._info('audio_interval')
         )
-        self.btnAudioIntervalInfo.place(x=160, y=68)
+        self.btnAudioIntervalInfo.grid(row=1, column=5, sticky='w')
 
-        self.lblVideoColorDiff = tk.Label(master, text=_('Video Color Diff: '))
-        self.lblVideoColorDiff.place(x=200, y=40)
+        self.lblVideoColorDiff = tk.Label(self.frame, text=_('Video Color Diff: '))
+        self.lblVideoColorDiff.grid(row=2, column=0, sticky='w', pady=5)
         self.txtVideoColorDiff = tk.Entry(
-            master, textvariable=self.arg_video_color_diff, width=5)
-        self.txtVideoColorDiff.place(x=310, y=42)
+            self.frame, textvariable=self.arg_video_color_diff, width=5)
+        self.txtVideoColorDiff.grid(row=2, column=1)
         self.btnVideoColorDiffInfo = tk.Button(
-            master, text='?', command=lambda: self._info('video_color_diff')
+            self.frame, text='?', command=lambda: self._info('video_color_diff')
         )
-        self.btnVideoColorDiffInfo.place(x=350, y=38)
+        self.btnVideoColorDiffInfo.grid(row=2, column=2, sticky='w')
 
-        self.lblVideoColorRatio = tk.Label(master, text=_('Video Color Ratio: '))
-        self.lblVideoColorRatio.place(x=200, y=70)
+        self.lblVideoColorRatio = tk.Label(self.frame, text=_('Video Color Ratio: '))
+        self.lblVideoColorRatio.grid(row=2, column=3, sticky='w')
         self.txtVideoColorRatio = tk.Entry(
-            master, textvariable=self.arg_video_color_ratio, width=5)
-        self.txtVideoColorRatio.place(x=310, y=72)
+            self.frame, textvariable=self.arg_video_color_ratio, width=5)
+        self.txtVideoColorRatio.grid(row=2, column=4)
         self.btnVideoColorRatioInfo = tk.Button(
-            master, text='?', command=lambda: self._info('video_color_ratio')
+            self.frame, text='?', command=lambda: self._info('video_color_ratio')
         )
-        self.btnVideoColorRatioInfo.place(x=350, y=68)
+        self.btnVideoColorRatioInfo.grid(row=2, column=5, sticky='w')
 
-        self.comboOutputFormat = ttk.Combobox(self.master, values = [
+        self.comboOutputFormat = ttk.Combobox(self.frame, values = [
             _('Plot Image'), _('.csv File')
         ])
-        self.comboOutputFormat.place(x=12, y=102)
+        self.comboOutputFormat.grid(row=3, column=0, columnspan=2, sticky='w', pady=5)
         self.comboOutputFormat.current(0)
         self.comboOutputFormatInfo = tk.Button(
-            master, text='?', command=lambda: self._info('output_format')
+            self.frame, text='?', command=lambda: self._info('output_format')
         )
-        self.comboOutputFormatInfo.place(x=160, y=100)
+        self.comboOutputFormatInfo.grid(row=3, column=2, sticky='w')
 
-        self.chkTryMatch = tk.Checkbutton(master, text=_('Try ignoring stutters'),
+        self.chkTryMatch = tk.Checkbutton(self.frame, text=_('Try ignoring stutters'),
                                           var=self.arg_try_match)
-        self.chkTryMatch.place(x=200, y=100)
+        self.chkTryMatch.grid(row=3, column=3, columnspan=2, sticky='w')
         self.btnTryMatchInfo = tk.Button(
-            master, text='?', command=lambda: self._info('try_match')
+            self.frame, text='?', command=lambda: self._info('try_match')
         )
-        self.btnTryMatchInfo.place(x=350, y=98)
+        self.btnTryMatchInfo.grid(row=3, column=5, sticky='w')
 
-        self.btnSubmit = tk.Button(master, text=_('Analyze'), command=self.analyze,
+        self.btnSubmit = tk.Button(self.frame, text=_('Analyze'), command=self.analyze,
                                    bg='lightblue')
-        self.btnSubmit.place(x=12, y=135)
+        self.btnSubmit.grid(row=4, column=0, sticky='w', pady=5)
 
-        self.logOutput = LogOutput()
-        self.logOutput.place(x=10, y=170)
+        self.logOutput = LogOutput(self.frame)
+        self.logOutput.grid(row=5, column=0, columnspan=8)
         self.logOutput.config(width=480, height=420)
         logger.Logger.get_instance().output_function = self.logOutput.log
         Log.info('Startup')
+
+        self.frame.pack(pady=5)
 
 
     def analyze(self):
