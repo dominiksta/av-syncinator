@@ -181,6 +181,14 @@ def timestamps_video_and_audio_for_file(
         video_threshold_color_diff,
         video_threshold_color_ratio
     )
+
+    if len(timestamps_audio) == 0:
+        Log.error("Found no audio timestamps")
+        raise Exception("Found no audio timestamps")
+    if len(timestamps_video) == 0:
+        Log.error("Found no video timestamps")
+        raise Exception("Found no video timestamps")
+
     Log.info("Got all timestamps")
 
     if try_ignore_stutters_by_matching:

@@ -14,6 +14,7 @@ Changelog
 
 - CLI now throws an error immediatly when given an invalid filename
 - Docker build had an incorrect ENTRYPOINT
+- Show error message when no timestamps of either audio or video are found
 
 
 `0.0.2` - _2021-07-05_
