@@ -1,6 +1,6 @@
 import os
 import sys
-from . import build
+import build
 
 def run_tests(python_minor_version: int = 9):
     build.build(python_minor_version)

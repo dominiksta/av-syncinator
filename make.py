@@ -18,7 +18,6 @@ def _main():
     if args.target == 'windows': build_windows()
     if args.target == 'gnu_linux': build_gnu_linux()
     if args.target == 'docker': build_docker()
-    if args.target == 'test_docker': test_docker()
     if args.target == 'clean': clean()
 
 
@@ -64,15 +63,6 @@ def build_docker():
     mod = importlib.import_module('build.docker.build')
     os.chdir('build' + os.sep + 'docker')
     mod.build()
-    os.chdir(prevdir)
-
-
-def test_docker():
-    mod = importlib.import_module('build.docker.run_tests')
-    os.chdir('build' + os.sep + 'docker')
-    mod.run_tests(9)
-    mod.run_tests(8)
-    mod.run_tests(7)
     os.chdir(prevdir)
 
 
