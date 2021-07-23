@@ -37,4 +37,4 @@ jobs:
         uses: actions/setup-python@v2.2.2
 
       - name: Run Tests trough Docker with Python 3.${{ matrix.python_minor_version }}
-        run: cd build/docker && python3 run-tests.py ${{ matrix.python_minor_version }}
+        run: cd build/docker && python3 run_tests.py ${{ matrix.python_minor_version }}
