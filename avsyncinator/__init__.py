@@ -2,7 +2,7 @@ import sys
 import os
 import shutil
 
-VERSION='0.0.2'
+VERSION='0.0.3'
 
 MIN_PYTHON = (3, 7)
 if sys.version_info < MIN_PYTHON:
