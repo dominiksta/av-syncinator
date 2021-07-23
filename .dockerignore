@@ -2,6 +2,5 @@ __pycache__/
 /.pyenv
 /data
 /build/windows
-
-/build/gnu+linux/dist/*
-!/build/gnu+linux/dist/.gitkeep
+/build/gnu_linux/tmp
+/build/gnu_linux/dist

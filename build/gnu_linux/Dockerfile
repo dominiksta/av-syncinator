@@ -16,5 +16,5 @@ RUN tar xf ffmpeg-release-amd64-static.tar.xz
 RUN mv /tmp/ffmpeg-*/ffmpeg /tmp/ffmpeg
 
 ADD / /src
-WORKDIR /src/build/gnu+linux
+WORKDIR /src/build/gnu_linux
 ENTRYPOINT ["bash", "build.sh", "both"]

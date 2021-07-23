@@ -1,0 +1,6 @@
+#!/bin/bash
+
+SELF=$(readlink -f "$0")
+HERE=${SELF%/*}
+EXEC="${HERE}/app/av-syncinator-cli/av-syncinator-cli"
+exec "${EXEC}"

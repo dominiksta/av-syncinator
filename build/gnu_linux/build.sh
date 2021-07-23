@@ -10,7 +10,7 @@ mkdir -p /tmp/buildtmp
 
 build() {
     pyinstaller \
-        --onefile \
+        --onedir -y \
         --add-data "avsyncinator/res/logo/logo.ico:res/logo" \
         --add-data "/tmp/ffmpeg:." \
         --workpath "/tmp/buildtmp" \

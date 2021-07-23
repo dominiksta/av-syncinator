@@ -9,5 +9,11 @@ __pycache__/
 /build/windows/dist/*
 !/build/windows/dist/.gitkeep
 
-/build/gnu+linux/dist/*
-!/build/gnu+linux/dist/.gitkeep
+/build/gnu_linux/tmp/av-syncinator.AppDir/app/*
+!/build/gnu_linux/tmp/av-syncinator.AppDir/app/.gitkeep
+/build/gnu_linux/tmp/av-syncinator-cli.AppDir/app/*
+!/build/gnu_linux/tmp/av-syncinator-cli.AppDir/app/.gitkeep
+/build/gnu_linux/tmp/av-syncinator-cli/
+/build/gnu_linux/tmp/av-syncinator/
+/build/gnu_linux/dist/*
+!/build/gnu_linux/dist/.gitkeep

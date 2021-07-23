@@ -5,8 +5,8 @@ Changelog
 ----------------------------------------------------------------------
 
 ### Added
-- Linux binaries with all dependencies included are now available (tested only
-  on Ubuntu 20.04, but they should work on all distributions)
+- Linux binaries with all dependencies included are now available as AppImages
+  (tested only on Ubuntu 20.04, but they should work on all distributions)
 
 ### Changed
 

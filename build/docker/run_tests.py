@@ -1,6 +1,6 @@
 import os
 import sys
-import build
+from . import build
 
 def run_tests(python_minor_version: int = 9):
     build.build(python_minor_version)
@@ -21,7 +21,7 @@ def run_tests(python_minor_version: int = 9):
     if os.name != 'nt': ret = os.WEXITSTATUS(ret)
 
     os.chdir(prevdir)
-    sys.exit(ret)
+    if ret != 0: exit(ret)
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2: run_tests(int(sys.argv[1]))

@@ -1,0 +1,16 @@
+ARG DEBIAN_VERSION=buster
+FROM debian:${DEBIAN_VERSION}
+
+RUN apt-get update && apt-get install -y wget libfuse2 file appstream gpg
+
+ENV APPIMAGETOOL_VERSION=13
+RUN wget https://github.com/AppImage/AppImageKit/releases/download/$APPIMAGETOOL_VERSION/appimagetool-x86_64.AppImage -O /opt/appimagetool
+# Fix appimagetool in docker from
+# https://appimage-builder.readthedocs.io/en/latest/intro/install.html
+RUN cd /opt/; chmod +x appimagetool; sed -i 's|AI\x02|\x00\x00\x00|' appimagetool; ./appimagetool --appimage-extract
+RUN mv /opt/squashfs-root /opt/appimagetool.AppDir
+RUN ln -s /opt/appimagetool.AppDir/AppRun /usr/local/bin/appimagetool
+
+VOLUME /app
+WORKDIR /app
+ENV ARCH=x86_64
